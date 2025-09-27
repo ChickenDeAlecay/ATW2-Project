@@ -105,11 +105,13 @@ $user = $auth->getCurrentUser();
         const baseUrl = '<?php 
             $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'];
-            $path = dirname($_SERVER['REQUEST_URI']);
-            // Ensure path ends with exactly one slash
-            $path = rtrim($path, '/') . '/';
-            echo $protocol . '://' . $host . $path;
+            // For Plesk servers, the path includes the domain directory
+            // Your files are in: Home directory/ws371518-atw2.remote.ac/icons
+            echo $protocol . '://' . $host . '/' . $host . '/';
         ?>';
+        
+        // Debug: log the base URL to console
+        console.log('Base URL:', baseUrl);
         
         let map;
         let markers = [];
