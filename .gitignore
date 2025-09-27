@@ -1,0 +1,20 @@
+# Cache directory
+cache/
+
+# Environment files
+.env
+.env.local
+
+# PHP temp files
+*.tmp
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
