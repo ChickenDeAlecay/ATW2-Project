@@ -102,7 +102,14 @@ $user = $auth->getCurrentUser();
 
     <script>
         // Get the base URL from PHP for reliable icon loading
-        const baseUrl = '<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/'; ?>';
+        const baseUrl = '<?php 
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+            $host = $_SERVER['HTTP_HOST'];
+            $path = dirname($_SERVER['REQUEST_URI']);
+            // Ensure path ends with exactly one slash
+            $path = rtrim($path, '/') . '/';
+            echo $protocol . '://' . $host . $path;
+        ?>';
         
         let map;
         let markers = [];
