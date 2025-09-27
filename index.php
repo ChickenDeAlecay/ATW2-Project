@@ -335,9 +335,9 @@ $user = $auth->getCurrentUser();
         function getTreeIcon(attributes) {
             // Return different icons based on tree status
             if (attributes.DEAD === 'Y') {
-                return 'icons/dead_tree.png';
+                return './icons/dead_tree.png';
             } else {
-                return 'icons/alive_tree.png';
+                return './icons/alive_tree.png';
             }
         }
 
