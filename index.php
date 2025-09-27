@@ -334,10 +334,11 @@ $user = $auth->getCurrentUser();
 
         function getTreeIcon(attributes) {
             // Return different icons based on tree status
+            // Use absolute path from domain root for Plesk server
             if (attributes.DEAD === 'Y') {
-                return './icons/dead_tree.png';
+                return '/icons/dead_tree.png';
             } else {
-                return './icons/alive_tree.png';
+                return '/icons/alive_tree.png';
             }
         }
 
