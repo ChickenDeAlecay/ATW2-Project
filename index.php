@@ -101,6 +101,9 @@ $user = $auth->getCurrentUser();
     </div>
 
     <script>
+        // Get the base URL from PHP for reliable icon loading
+        const baseUrl = '<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/'; ?>';
+        
         let map;
         let markers = [];
         let trees = [];
@@ -334,11 +337,11 @@ $user = $auth->getCurrentUser();
 
         function getTreeIcon(attributes) {
             // Return different icons based on tree status
-            // Use absolute path from domain root for Plesk server
+            // Use PHP-generated base URL for reliable path resolution
             if (attributes.DEAD === 'Y') {
-                return '/icons/dead_tree.png';
+                return baseUrl + 'icons/dead_tree.png';
             } else {
-                return '/icons/alive_tree.png';
+                return baseUrl + 'icons/alive_tree.png';
             }
         }
 
