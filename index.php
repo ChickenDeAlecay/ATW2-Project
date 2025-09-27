@@ -101,18 +101,6 @@ $user = $auth->getCurrentUser();
     </div>
 
     <script>
-        // Get the base URL from PHP for reliable icon loading
-        const baseUrl = '<?php 
-            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
-            $host = $_SERVER['HTTP_HOST'];
-            // For Plesk servers, the path includes the domain directory
-            // Your files are in: Home directory/ws371518-atw2.remote.ac/icons
-            echo $protocol . '://' . $host . '/' . $host . '/';
-        ?>';
-        
-        // Debug: log the base URL to console
-        console.log('Base URL:', baseUrl);
-        
         let map;
         let markers = [];
         let trees = [];
@@ -346,11 +334,10 @@ $user = $auth->getCurrentUser();
 
         function getTreeIcon(attributes) {
             // Return different icons based on tree status
-            // Use PHP-generated base URL for reliable path resolution
             if (attributes.DEAD === 'Y') {
-                return baseUrl + 'icons/dead_tree.png';
+                return 'icons/dead_tree.png';
             } else {
-                return baseUrl + 'icons/alive_tree.png';
+                return 'icons/alive_tree.png';
             }
         }
 
