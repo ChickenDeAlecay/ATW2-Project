@@ -111,6 +111,7 @@ $user = $auth->getCurrentUser();
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: <?php echo DEFAULT_ZOOM; ?>,
                 center: { lat: <?php echo DEFAULT_LAT; ?>, lng: <?php echo DEFAULT_LNG; ?> }, // Bristol coordinates
+                mapId: "bristol-trees-map" // Required for Advanced Markers
             });
 
             // Add event listeners for map movement and zoom
@@ -272,15 +273,15 @@ $user = $auth->getCurrentUser();
 
             // Clear existing markers that are outside bounds
             markers.forEach(marker => {
-                const position = marker.getPosition();
+                const position = marker.position;
                 if (!bounds.contains(position)) {
-                    marker.setMap(null);
+                    marker.map = null;
                     visibleTrees.delete(marker.treeIndex);
                 }
             });
 
             // Remove cleared markers from array
-            markers = markers.filter(marker => marker.getMap() !== null);
+            markers = markers.filter(marker => marker.map !== null);
 
             let addedCount = 0;
             const maxMarkersPerUpdate = 500; // Limit markers per update for performance
@@ -300,10 +301,7 @@ $user = $auth->getCurrentUser();
                     
                     // Check if tree is in viewport and not already visible
                     if (bounds.contains(position) && !visibleTrees.has(index)) {
-                        const treeIcon = document.createElement('img');
-                        treeIcon.src = new URL(getTreeIcon(tree.attributes), window.location.href);
-                        treeIcon.style.width = '16px';
-                        treeIcon.style.height = '16px';
+                        const treeIcon = createTreeMarkerContent(tree.attributes);
 
                         const marker = new google.maps.marker.AdvancedMarkerElement({
                             position: position,
@@ -337,10 +335,36 @@ $user = $auth->getCurrentUser();
         function getTreeIcon(attributes) {
             // Return different icons based on tree status
             if (attributes.DEAD === 'Y') {
-                return './icons/dead_tree.png';
+                return 'icons/dead_tree.svg';
             } else {
-                return './icons/alive_tree.png';
+                return 'icons/alive_tree.svg';
             }
+        }
+
+        function createTreeMarkerContent(attributes) {
+            const treeIcon = document.createElement('img');
+            treeIcon.src = getTreeIcon(attributes);
+            treeIcon.style.width = '16px';
+            treeIcon.style.height = '16px';
+            treeIcon.alt = attributes.FULL_COMMON_NAME || 'Tree';
+            
+            // Add error handling for missing icons
+            treeIcon.onerror = function() {
+                // Create a colored circle as fallback
+                const fallbackIcon = document.createElement('div');
+                fallbackIcon.style.width = '12px';
+                fallbackIcon.style.height = '12px';
+                fallbackIcon.style.borderRadius = '50%';
+                fallbackIcon.style.backgroundColor = attributes.DEAD === 'Y' ? '#9E9E9E' : '#4CAF50';
+                fallbackIcon.style.border = '2px solid white';
+                fallbackIcon.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
+                fallbackIcon.title = attributes.FULL_COMMON_NAME || 'Tree';
+                
+                // Replace the img element with the fallback
+                this.parentNode.replaceChild(fallbackIcon, this);
+            };
+            
+            return treeIcon;
         }
 
         function showTreeInfo(attributes) {
