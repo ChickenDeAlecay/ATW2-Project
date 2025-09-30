@@ -405,8 +405,8 @@ $user = $auth->getCurrentUser();
                     <div class="tree-details">
                         <p><strong>Type:</strong> ${tree.attributes.TYPE || 'N/A'}</p>
                         <p><strong>Latin Name:</strong> ${tree.attributes.LATIN_NAME || 'N/A'}</p>
-                        <p><strong>Crown Height:</strong> ${tree.attributes.CROWN_HEIGHT || 'N/A'}m</p>
-                        <p><strong>Crown Width:</strong> ${tree.attributes.CROWN_WIDTH || 'N/A'}m</p>
+                        <p><strong>Crown Height:</strong> ${tree.attributes.CROWN_HEIGHT || 'N/A'}</p>
+                        <p><strong>Crown Width:</strong> ${tree.attributes.CROWN_WIDTH || 'N/A'}</p>
                         <p><strong>Status:</strong> ${tree.attributes.DEAD === 'Y' ? 'Dead' : 'Alive'}</p>
                 `;
                 
@@ -637,7 +637,7 @@ $user = $auth->getCurrentUser();
         };
     </script>
     
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=marker&callback=initMap" onerror="handleMapError()"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=marker&loading=async&callback=initMap" onerror="handleMapError()"></script>
     
     <script>
         // Fallback if Google Maps script fails to load
