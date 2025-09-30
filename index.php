@@ -300,14 +300,16 @@ $user = $auth->getCurrentUser();
                     
                     // Check if tree is in viewport and not already visible
                     if (bounds.contains(position) && !visibleTrees.has(index)) {
-                        const marker = new google.maps.Marker({
+                        const treeIcon = document.createElement('img');
+                        treeIcon.src = new URL(getTreeIcon(tree.attributes), window.location.href);
+                        treeIcon.style.width = '16px';
+                        treeIcon.style.height = '16px';
+
+                        const marker = new google.maps.marker.AdvancedMarkerElement({
                             position: position,
                             map: map,
                             title: tree.attributes.FULL_COMMON_NAME || 'Unknown tree',
-                            icon: {
-                                url: getTreeIcon(tree.attributes),
-                                scaledSize: new google.maps.Size(16, 16)
-                            }
+                            content: treeIcon
                         });
 
                         marker.treeIndex = index; // Store index for tracking
@@ -611,7 +613,7 @@ $user = $auth->getCurrentUser();
         };
     </script>
     
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&callback=initMap" onerror="handleMapError()"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=marker&callback=initMap" onerror="handleMapError()"></script>
     
     <script>
         // Fallback if Google Maps script fails to load
