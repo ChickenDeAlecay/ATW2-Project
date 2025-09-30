@@ -300,16 +300,14 @@ $user = $auth->getCurrentUser();
                     
                     // Check if tree is in viewport and not already visible
                     if (bounds.contains(position) && !visibleTrees.has(index)) {
-                        const treeIcon = document.createElement('img');
-                        treeIcon.src = new URL(getTreeIcon(tree.attributes), window.location.href);
-                        treeIcon.style.width = '16px';
-                        treeIcon.style.height = '16px';
-
-                        const marker = new google.maps.marker.AdvancedMarkerElement({
+                        const marker = new google.maps.Marker({
                             position: position,
                             map: map,
                             title: tree.attributes.FULL_COMMON_NAME || 'Unknown tree',
-                            content: treeIcon
+                            icon: {
+                                url: getTreeIcon(tree.attributes),
+                                scaledSize: new google.maps.Size(16, 16)
+                            }
                         });
 
                         marker.treeIndex = index; // Store index for tracking
